@@ -14,13 +14,13 @@ Use Claude Code with your own **Zoho CRM demo orgs** without ever giving Claude 
 Requires Python 3.10+, `git`, [Claude Code](https://claude.com/claude-code), and either `pipx` or `uv`.
 
 ```bash
-pipx install git+https://github.com/ChamyCA/zcrm-api@v1.0.0 && zcrm init
+pipx install git+https://github.com/ChamyCA/zcrm-api@v1.1.0 && zcrm init
 ```
 
 With uv instead:
 
 ```bash
-uvx --from git+https://github.com/ChamyCA/zcrm-api@v1.0.0 zcrm init
+uvx --from git+https://github.com/ChamyCA/zcrm-api@v1.1.0 zcrm init
 ```
 
 `uvx` runs in a throwaway environment, so `init` offers to run `uv tool install` to keep the `zcrm` command on your PATH. The skill needs it there.

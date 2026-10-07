@@ -81,6 +81,14 @@ def emit_json(obj) -> None:
     sys.stdout.flush()
 
 
+def stream_is_tty(stream: str = "stderr") -> bool:
+    target = sys.stderr if stream == "stderr" else sys.stdout
+    try:
+        return target.isatty()
+    except (AttributeError, ValueError):
+        return False
+
+
 def emit_text(message: str, *, stream: str = "stderr") -> None:
     target = sys.stderr if stream == "stderr" else sys.stdout
     target.write(redact(message) + "\n")

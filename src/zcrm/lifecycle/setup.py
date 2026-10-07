@@ -1,6 +1,7 @@
 """Interactive profile wizard. Secrets are read with hidden input and stored only in the keyring."""
 
 from zcrm import auth, datacenters, profiles, scopes, secrets, ui
+from zcrm.lifecycle import banner
 from zcrm.output import EXIT_OK, EXIT_REFUSED, EXIT_CREDENTIAL, ZcrmError
 
 
@@ -26,6 +27,7 @@ def instructions(profile) -> str:
 
 
 def collect_profile(name: str) -> profiles.Profile:
+    ui.say(banner.heading("Step 1 of 3 - Name and data center"))
     ui.say(f"Setting up profile '{name}'. Only DEMO orgs are supported.")
     ui.say("Data centers: " + ", ".join(datacenters.suffixes()))
     while True:
@@ -60,7 +62,9 @@ def run(name: str) -> int:
         profile.name,
         {"data_center": profile.data_center, "api_version": profile.api_version, "type": profile.type, "scopes": profile.scopes},
     )
+    ui.say(banner.heading("Step 2 of 3 - Create a Self Client in the Zoho API Console"))
     ui.say(instructions(profile))
+    ui.say(banner.heading("Step 3 of 3 - Paste your credentials (hidden)"))
     client_id = ui.ask_secret("Client ID")
     client_secret = ui.ask_secret("Client secret")
     refresh = ui.ask_secret("Refresh token (leave blank to paste a grant code instead)")
@@ -83,5 +87,5 @@ def run(name: str) -> int:
     except ZcrmError as exc:
         ui.say(f"Credentials are stored, but verification failed: {exc.message} {exc.fix or ''}")
         return EXIT_CREDENTIAL
-    ui.say(f"Profile '{name}' is ready.")
+    ui.say(banner.step("Credentials verified", f"profile '{name}' is ready", last=True))
     return EXIT_OK
