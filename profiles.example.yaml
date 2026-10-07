@@ -1,0 +1,15 @@
+# Example zcrm profiles file (non-secret). Real file: ~/.config/zcrm/profiles.yaml
+# Secrets (client ID, client secret, refresh token) never go in this file.
+# They are stored in your OS keyring by `zcrm setup <profile>`.
+version: 1
+profiles:
+  acme-demo:
+    data_center: ".com"      # .com .ca .eu .in .com.au .jp .com.cn .sa
+    api_version: "v8"
+    type: "demo"             # only demo profiles are accepted
+    scopes:
+      - ZohoCRM.modules.ALL
+      - ZohoCRM.settings.ALL
+      - ZohoCRM.org.READ
+      - ZohoCRM.coql.READ
+      - ZohoCRM.users.READ
