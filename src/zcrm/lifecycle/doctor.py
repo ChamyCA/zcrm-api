@@ -27,7 +27,7 @@ def _config_secret_check(loaded_profiles) -> dict:
     bad = []
     if root.exists():
         for file in root.rglob("*"):
-            if not file.is_file():
+            if not file.is_file() or file.name == "token-cache.json":
                 continue
             text = file.read_text(encoding="utf-8", errors="ignore")
             if scan.find_credentials(text) or any(value in text for value in exact):
@@ -45,10 +45,15 @@ def run_checks() -> list:
         _check("python", sys.version_info >= (3, 10), f"Python {sys.version.split()[0]}", "Install Python 3.10 or newer."),
     ]
     try:
-        secrets.probe()
-        checks.append(_check("keyring", True, "OS keyring read/write works"))
+        secrets.probe_read()
+        checks.append(_check("keyring_read", True, "credentials: readable"))
+        if secrets.probe_write():
+            detail = "token cache: writable"
+        else:
+            detail = "token cache: not writable, using the in-memory/file fallback (`zcrm setup` needs a writable keychain)"
+        checks.append(_check("keyring_write", True, detail))
     except ZcrmError as exc:
-        checks.append(_check("keyring", False, exc.message, exc.fix))
+        checks.append(_check("keyring_read", False, exc.message, exc.fix))
     checks.append(
         _check("zcrm_on_path", shutil.which("zcrm") is not None, "zcrm is on PATH", "Install with `pipx install` or `uv tool install` so the `zcrm` command stays on PATH.")
     )

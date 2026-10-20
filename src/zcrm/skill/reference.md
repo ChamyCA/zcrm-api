@@ -68,3 +68,7 @@ verify:
 - `org_id` must match the org of the chosen profile.
 - Later steps may use `{{lead_id}}` in `path` or `body`.
 - `verify` (optional) is a GET used to confirm a write whose result was lost in an interruption.
+
+## Sandbox notes
+
+Inside the Claude Code sandbox, zcrm needs network access to `www.zohoapis.com` and `accounts.zoho.com` (or your data center's equivalents) and write access to `~/.config/zcrm`. Client id, secret and refresh token are read from the keychain only. The access-token cache is best-effort: if the keychain is not writable it falls back to memory and `~/.config/zcrm/token-cache.json` (0600, access token only). `zcrm doctor` reports keychain read and write status separately.

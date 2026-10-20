@@ -53,3 +53,7 @@ The user gives you a Markdown plan (for example from the zcrm-planner skill). Ru
 ## Reference
 
 See `reference.md` in this folder for the command reference, plan format and exit codes.
+
+## Running inside the Claude Code sandbox
+
+Inside the sandbox, `zcrm` needs network access to `www.zohoapis.com` and `accounts.zoho.com` (use your data center's hosts if different) and write access to `~/.config/zcrm`. The keychain may be readable but not writable there; that is fine, because the short-lived access token falls back to memory and a 0600 file in `~/.config/zcrm`. If credentials cannot be read at all (`keyring_unavailable`), exclude `zcrm` from the sandbox or run it outside it.
