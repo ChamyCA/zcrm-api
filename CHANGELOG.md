@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.2 - 2026-10-29
+
+- Fix: commands no longer fail when `~/.config/zcrm/audit.log` is not writable (sandbox "Operation not permitted"). Audit logging is best-effort.
+
 ## 1.1.1 - 2026-10-20
 
 - Fix: commands no longer fail with `internal_error` (PasswordSetError) in sandboxes where the keychain is readable but not writable. The access-token cache is best-effort (memory, then a 0600 `token-cache.json`).

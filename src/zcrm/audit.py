@@ -47,11 +47,15 @@ def log_call(profile, method, path, status, outcome, run_id=None, step_id=None) 
         entry["run_id"] = run_id
     if step_id:
         entry["step_id"] = step_id
-    file = paths.audit_file()
-    file.parent.mkdir(parents=True, exist_ok=True)
-    _rotate(file)
-    with open(file, "a", encoding="utf-8") as fh:
-        fh.write(json.dumps(entry) + "\n")
+    # Best-effort: a read-only config dir (e.g. a sandbox) must not fail the API call.
+    try:
+        file = paths.audit_file()
+        file.parent.mkdir(parents=True, exist_ok=True)
+        _rotate(file)
+        with open(file, "a", encoding="utf-8") as fh:
+            fh.write(json.dumps(entry) + "\n")
+    except OSError:
+        pass
 
 
 def read_entries(profile=None, last=None) -> list:
